@@ -23,7 +23,8 @@
       "js": [
         "jquery-3.3.1.min.js",
         "contentScript.js"
-      ]
+      ],
+      "css": ["styles.css"]
     }
     ]
 }
