@@ -1,0 +1,29 @@
+{
+  "name": "Bookmarker",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "background": {
+    "scripts": [
+      "main.js"
+    ],
+    "persistent": false
+  },
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "activeTab",
+    "http://*/*",
+    "https://*/*",
+    "tabs",
+    "webNavigation"
+  ],
+  "content_scripts":[
+    {
+      "matches" : ["http://*/*", "https://*/*"],
+      "js": [
+        "contentScript.js",
+        "jquery-3.3.1.min.js"
+      ]
+    }
+    ]
+}
