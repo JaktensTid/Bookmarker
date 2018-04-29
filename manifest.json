@@ -21,8 +21,8 @@
     {
       "matches" : ["http://*/*", "https://*/*"],
       "js": [
-        "contentScript.js",
-        "jquery-3.3.1.min.js"
+        "jquery-3.3.1.min.js",
+        "contentScript.js"
       ]
     }
     ]
