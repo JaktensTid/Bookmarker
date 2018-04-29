@@ -4,7 +4,6 @@ class App {
     removePoint(url, position){
         chrome.storage.local.get(url, function (result) {
             var points = result[url];
-            points.remove(position);
             var i = points.indexOf(position);
             if(i !== -1) {
                 points.splice(i, 1);
@@ -20,7 +19,7 @@ class App {
         }
         let url = document.URL;
         let outer = this;
-        panel = $(`<div class="sidenav" id="${id}"></div>`);
+        panel = $(`<div oncontextmenu="return false;" class="sidenav" id="${id}"></div>`);
         chrome.storage.local.get(url, function (result) {
             if (!$.isEmptyObject(result)) {
                 let points = result[url];
@@ -28,7 +27,7 @@ class App {
                 for (let i = 0; i < points.length; i++) {
                     let position = points[i];
                     let paddingTop = (position / pageHeight) * 100;
-                    let point = $(`<div style="top: ${paddingTop}%;"></div>`);
+                    let point = $(`<div oncontextmenu="return false;" style="top: ${paddingTop}%;"></div>`);
                     $(point).on('click', function (e) {
                         window.scroll({'left': 0, 'top': position, 'behavior': 'smooth'});
                     });
@@ -49,15 +48,21 @@ class App {
 
     constructor() {
         let outer = this;
+        let url = document.URL;
         window.onload = function () {
             outer.bindPoints();
         };
+
+        chrome.storage.sync.get(url, function(result) {
+            if(!$.isEmptyObject(result)){
+                chrome.storage.local.set(result);
+            }
+        });
 
         chrome.runtime.onMessage.addListener(
             function (request) {
                 if (request.action == 'getHeight') {
                     $(document).one('mousemove', function (e) {
-                        let url = document.URL;
                         chrome.storage.local.get(url, function (result) {
                             let obj;
                             if (!$.isEmptyObject(result) && result[url].length > 0) {
@@ -70,13 +75,13 @@ class App {
                             }
                             obj[url].sort();
                             chrome.storage.local.set(obj);
+                            chrome.storage.sync.set(obj);
                             outer.bindPoints();
                         });
                     });
                 }
             }
-        )
-        ;
+        );
     }
 }
 new App();
